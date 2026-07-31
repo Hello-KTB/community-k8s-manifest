@@ -6,20 +6,53 @@ metadata:
     app: {{ .Release.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: {{ .Values.deploymentControl.progressDeadlineSeconds }}
+  minReadySeconds: {{ .Values.deploymentControl.minReadySeconds }}
+  revisionHistoryLimit: {{ .Values.deploymentControl.revisionHistoryLimit }}
+  
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Values.labels.app }}
+      tier: {{ .Values.labels.tier }}
+      
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Values.labels.app }}
+        tier: {{ .Values.labels.tier }}
     spec:
+      terminationGracePeriodSeconds: {{ .Values.deploymentControl.terminationGracePeriodSeconds }}
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - {{ .Values.labels.app }}
+                topologyKey: "kubernetes.io/hostname"
+                
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.targetPort }}
+          
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep {{ .Values.deploymentControl.preStopSleepSeconds }}"]
           
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -31,6 +64,28 @@ spec:
             - secretRef:
                 name: community-backend-secret
           
+          startupProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.targetPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 12
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.targetPort }}
+            periodSeconds: 5
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.targetPort }}
+            periodSeconds: 10
+            failureThreshold: 3
+
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
