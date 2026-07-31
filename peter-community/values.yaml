@@ -1,5 +1,16 @@
 replicaCount: 2
 
+labels:
+  app: community
+  tier: backend
+
+deploymentControl:
+  progressDeadlineSeconds: 300
+  minReadySeconds: 10
+  revisionHistoryLimit: 5
+  terminationGracePeriodSeconds: 40
+  preStopSleepSeconds: 5
+
 image:
   repository: peterj0117/community-backend
   tag: "v2.0.0"
@@ -17,8 +28,8 @@ ingress:
 
 resources:
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 500m
+    memory: 512Mi
   limits:
     cpu: 500m
-    memory: 256Mi
+    memory: 512Mi
