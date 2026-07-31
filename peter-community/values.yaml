@@ -20,6 +20,8 @@ service:
   type: ClusterIP
   port: 80
   targetPort: 8080
+  selector:
+    app: community-app
 
 ingress:
   enabled: true
