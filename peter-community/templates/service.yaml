@@ -9,4 +9,4 @@ spec:
       targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
   selector:
-    app: {{ .Release.Name }}
+    {{- toYaml .Values.service.selector | nindent 4 }}
