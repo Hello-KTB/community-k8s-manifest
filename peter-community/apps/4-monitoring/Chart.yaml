@@ -1,0 +1,14 @@
+apiVersion: v2
+name: peter-monitoring
+version: 0.1.0
+
+dependencies:
+  # 1. Prometheus + Grafana 스택
+  - name: kube-prometheus-stack
+    version: "88.1.2"
+    repository: "https://prometheus-community.github.io/helm-charts"
+
+  # 2. Loki + Promtail 스택
+  - name: loki-stack
+    version: "2.10.3"
+    repository: "https://grafana.github.io/helm-charts"
