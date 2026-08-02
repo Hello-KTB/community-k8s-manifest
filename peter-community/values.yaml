@@ -31,3 +31,13 @@ resources:
   limits:
     cpu: 500m
     memory: 513Mi
+
+frontend:
+  appName: community-frontend
+  image:
+    repository: peterj0117/community-frontend
+    tag: "latest"
+    pullPolicy: Always
+  service:
+    port: 80
+    targetPort: 3000

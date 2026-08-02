@@ -19,3 +19,4 @@ data:
   AWS_REGION: "ap-northeast-2"
 
   SPRING_PROFILES_ACTIVE: "prod"
+  API_BASE_URL: "http://peter-ktb4.cloud/api"
