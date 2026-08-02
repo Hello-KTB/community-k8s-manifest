@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-ingress
+  name: peter-community-ingress
   namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -18,16 +18,16 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ .Release.Name }}-service
+                name: {{ .Values.ingress.backendServiceName }}
                 port:
-                  number: {{ .Values.service.port }}
+                  number: 80
 
           # 2. 프론트엔드 UI 라우팅 (나머지 루트 경로)
           - path: /()(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ .Release.Name }}-frontend-service
+                name: {{ .Values.ingress.frontendServiceName }}
                 port:
-                  number: {{ .Values.frontend.service.port }}
+                  number: 80
 {{- end }}

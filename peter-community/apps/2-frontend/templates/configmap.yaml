@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: peter-community-frontend-configmap
+  namespace: {{ .Release.Namespace }}
+data:
+  API_BASE_URL: "http://peter-ktb4.cloud/api"

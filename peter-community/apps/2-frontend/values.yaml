@@ -1,0 +1,11 @@
+appName: community-frontend
+
+image:
+  repository: peterj0117/community-frontend
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  name: peter-community-frontend-service # Ingress 연동용 고정명
+  port: 80
+  targetPort: 3000

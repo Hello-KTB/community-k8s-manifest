@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-deployment
+  name: peter-community-deployment
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.appName }}
@@ -55,9 +55,9 @@ spec:
 
           envFrom:
             - configMapRef:
-                name: {{ .Release.Name }}-configmap
+                name: peter-community-configmap
             - secretRef:
-                name: {{ .Release.Name }}-secret
+                name: peter-community-secret
 
           startupProbe:
             httpGet:
