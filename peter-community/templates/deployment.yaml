@@ -2,14 +2,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Values.appName }}
 spec:
   replicas: {{ .Values.replicaCount }}
   progressDeadlineSeconds: {{ .Values.deploymentControl.progressDeadlineSeconds }}
   minReadySeconds: {{ .Values.deploymentControl.minReadySeconds }}
   revisionHistoryLimit: {{ .Values.deploymentControl.revisionHistoryLimit }}
-  
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,14 +19,12 @@ spec:
 
   selector:
     matchLabels:
-      app: {{ .Values.labels.app }}
-      tier: {{ .Values.labels.tier }}
-      
+      app: {{ .Values.appName }}
+
   template:
     metadata:
       labels:
-        app: {{ .Values.labels.app }}
-        tier: {{ .Values.labels.tier }}
+        app: {{ .Values.appName }}
     spec:
       terminationGracePeriodSeconds: {{ .Values.deploymentControl.terminationGracePeriodSeconds }}
 
@@ -39,42 +38,38 @@ spec:
                     - key: app
                       operator: In
                       values:
-                        - {{ .Values.labels.app }}
+                        - {{ .Values.appName }}
                 topologyKey: "kubernetes.io/hostname"
-                
+
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.targetPort }}
-          
+
           lifecycle:
             preStop:
               exec:
                 command: ["sh", "-c", "sleep {{ .Values.deploymentControl.preStopSleepSeconds }}"]
-          
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
 
           envFrom:
             - configMapRef:
-                name: community-backend-configmap
+                name: {{ .Release.Name }}-configmap
             - secretRef:
-                name: community-backend-secret
-          
+                name: {{ .Release.Name }}-secret
+
           startupProbe:
             httpGet:
               path: /health
               port: {{ .Values.service.targetPort }}
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 5
-            failureThreshold: 12
+            failureThreshold: 20
 
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /health
               port: {{ .Values.service.targetPort }}
             periodSeconds: 5
             failureThreshold: 3

@@ -1,0 +1,2 @@
+# Helm Secret Files Exclusion
+**/templates/secret.yaml

@@ -1,8 +1,6 @@
 replicaCount: 2
 
-labels:
-  app: community
-  tier: backend
+appName: community-app
 
 deploymentControl:
   progressDeadlineSeconds: 300
@@ -20,8 +18,6 @@ service:
   type: ClusterIP
   port: 80
   targetPort: 8080
-  selector:
-    app: community-app
 
 ingress:
   enabled: true
@@ -30,8 +26,8 @@ ingress:
 
 resources:
   requests:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 250m
+    memory: 256Mi
   limits:
     cpu: 500m
-    memory: 512Mi
+    memory: 513Mi

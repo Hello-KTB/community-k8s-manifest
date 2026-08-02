@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  namespace: {{ .Release.Namespace }}
+data:
+  # application.yml의 ${DB_HOST} 변수에 주입되는 값 (EC2 사설 IP 또는 DB IP)
+  DB_HOST: "10.0.5.94"
+  # application.yml의 ${DB_PORT} 변수에 주입되는 포트 번호
+  DB_PORT: "3306"
+  # application.yml의 ${DB_NAME} 변수에 주입되는 데이터베이스 이름
+  DB_NAME: "community"
+  # application.yml의 ${DB_USERNAME} 변수에 주입되는 DB 계정명
+  DB_USERNAME: "community"
+
+  # application.yml의 ${AWS_S3_BUCKET} 변수에 주입되는 S3 버킷 이름
+  AWS_S3_BUCKET: "ktb4-community-188055487858-ap-northeast-2-an"
+  # application.yml의 ${AWS_REGION} 변수에 주입되는 AWS 리전
+  AWS_REGION: "ap-northeast-2"
+
+  SPRING_PROFILES_ACTIVE: "prod"
