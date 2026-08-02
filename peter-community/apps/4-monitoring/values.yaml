@@ -8,7 +8,6 @@ loki-stack:
   loki:
     enabled: true
     datasource:
-      jsonData: "{}"
       isDefault: false
   promtail:
     enabled: false
