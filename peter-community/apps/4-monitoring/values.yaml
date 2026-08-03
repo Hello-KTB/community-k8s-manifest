@@ -2,7 +2,15 @@ kube-prometheus-stack:
   grafana:
     adminPassword: "admin"
     service:
-      type: NodePort
+      type: ClusterIP
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - grafana.peter-ktb4.cloud
+      paths:
+        - /
+      pathType: Prefix
 
 loki-stack:
   loki:
