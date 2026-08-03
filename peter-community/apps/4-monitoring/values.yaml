@@ -11,3 +11,7 @@ loki-stack:
       enabled: false
   promtail:
     enabled: false
+  file:
+    datasource.yaml: false
+  table:
+    datasource.yaml: false
