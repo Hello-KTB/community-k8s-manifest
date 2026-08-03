@@ -2,7 +2,7 @@ kube-prometheus-stack:
   grafana:
     adminPassword: "admin"
     service:
-      type: ClusterIP
+      type: NodePort
 
 loki-stack:
   loki:
