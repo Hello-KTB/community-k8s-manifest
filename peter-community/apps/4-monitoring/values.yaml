@@ -8,9 +8,7 @@ kube-prometheus-stack:
       ingressClassName: nginx
       hosts:
         - grafana.peter-ktb4.cloud
-      paths:
-        - path: /
-          pathType: Prefix
+      paths: /
 
 loki-stack:
   loki:
