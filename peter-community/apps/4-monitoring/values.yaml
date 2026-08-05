@@ -13,12 +13,15 @@ kube-prometheus-stack:
 loki-stack:
   loki:
     enabled: true
-    datasource:
-      enabled: false
-      isDefault: false
   promtail:
     enabled: false
   file:
-    datasource.yaml: false
-  table:
-    datasource.yaml: false
+    datasource.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: "http://peter-monitoring-loki:3100"
+          version: 1
+          isDefault: false
