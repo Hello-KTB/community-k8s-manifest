@@ -15,6 +15,7 @@ loki-stack:
     enabled: true
     datasource:
       enabled: false
+      isDefault: false
   promtail:
     enabled: false
   file:
