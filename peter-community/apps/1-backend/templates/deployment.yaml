@@ -25,6 +25,10 @@ spec:
     metadata:
       labels:
         app: {{ .Values.appName }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "{{ .Values.service.targetPort }}"
     spec:
       terminationGracePeriodSeconds: {{ .Values.deploymentControl.terminationGracePeriodSeconds }}
 
