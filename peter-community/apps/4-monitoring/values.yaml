@@ -16,7 +16,7 @@ loki-stack:
   promtail:
     enabled: false
   file:
-    datasource.yaml: |
+    datasource.yaml:
       apiVersion: 1
       datasources:
         - name: Loki
