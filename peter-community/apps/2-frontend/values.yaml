@@ -2,7 +2,7 @@ appName: community-frontend
 
 image:
   repository: peterj0117/community-frontend
-  tag: "latest"
+  tag: "v1.0.0"
   pullPolicy: Always
 
 service:
