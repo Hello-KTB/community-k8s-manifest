@@ -14,7 +14,7 @@ loki-stack:
   loki:
     enabled: true
   promtail:
-    enabled: false
+    enabled:true
   file:
     loki-stack-datasource.yaml:
       apiVersion: 1
