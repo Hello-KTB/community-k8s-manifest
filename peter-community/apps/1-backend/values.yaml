@@ -27,3 +27,10 @@ resources:
   limits:
     cpu: 500m
     memory: 513Mi
+    
+serviceMonitor:
+  enabled: true
+  namespace: monitoring # 프로메테우스가 감시하는 네임스페이스
+  releaseLabel: peter-monitoring # Prometheus Operator의 release 라벨
+  interval: 10s
+  path: /actuator/prometheus
