@@ -1,15 +1,21 @@
+{{- if .Values.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: peter-community-servicemonitor
-  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.appName }}-servicemonitor
+  namespace: {{ .Values.serviceMonitor.namespace }}
   labels:
-    release: peter-monitoring
+    app: {{ .Values.appName }}
+    release: {{ .Values.serviceMonitor.releaseLabel }}
 spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
   endpoints:
     - port: http
-      path: /actuator/prometheus
-      interval: 10s
+      path: {{ .Values.serviceMonitor.path }}
+      interval: {{ .Values.serviceMonitor.interval }}
+{{- end }}
