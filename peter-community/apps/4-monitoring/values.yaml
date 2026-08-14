@@ -14,6 +14,14 @@ loki-stack:
   loki:
     enabled: true
     serviceName: "peter-monitoring-loki"
+
+  grafana:
+    enabled: false # Loki 전용 Grafana는 끄고 kube-prometheus-stack의 Grafana 연동
+    sidecar:
+      datasources:
+        enabled: true
+        isDefault: false # 👈 핵심! 중복 isDefault: true 에러 완전 방지
+
   promtail:
     enabled: true
     config:
